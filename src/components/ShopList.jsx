@@ -1,9 +1,9 @@
 import ShopItem from "./ShopItem";
-const ShopList = ({ things }) => {
+const ShopList = ({ things, getItem }) => {
   return (
     <>
       {things.map((thing) => (
-        <ShopItem thing={thing} id={thing.id} />
+        <ShopItem thing={thing} getItem={getItem} />
       ))}
     </>
   );

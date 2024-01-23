@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import ShopInsert from "./ShopInsert";
 import ShopList from "./ShopList";
-import CartList from "./CartList";
+import CartTemplate from "./CartTemplate";
 
 const ShopTemplate = () => {
   const nextId = useRef(3);
@@ -16,7 +16,6 @@ const ShopTemplate = () => {
     { id: 2, text: "맥주", price: "6000원" },
     { id: 3, text: "양주", price: "10000원" },
   ]);
-  console.log(things);
   const onInsert = (text, price) => {
     const thing = {
       id: nextId.current,
@@ -26,18 +25,30 @@ const ShopTemplate = () => {
     setThings(things.concat(thing));
     nextId.current++;
   };
+  const [carts, setCarts] = useState([]);
+  const getItem = (item) => {
+    setCarts({ ...carts, item });
+  };
 
   return (
     <>
-      <ShopHeader>물 건 리 스 트</ShopHeader>
-      <ShopInsert onInsert={onInsert}></ShopInsert>
-      <ShopList things={things}></ShopList>
-      <ItemHeader>쇼 핑 카 트</ItemHeader>
-      <CartList></CartList>
+      <ShopContainer>
+        <ShopHeader>물 건 리 스 트</ShopHeader>
+        <ShopInsert onInsert={onInsert}></ShopInsert>
+        <ShopList things={things} getItem={getItem}></ShopList>
+        <ItemHeader>쇼 핑 카 트</ItemHeader>
+        <CartTemplate carts={carts}></CartTemplate>
+      </ShopContainer>
     </>
   );
 };
 export default ShopTemplate;
+const ShopContainer = styled.div`
+  display: flex;
+  width: 400px;
+  flex-direction: column;
+  margin: 0 auto;
+`;
 const ShopHeader = styled.div``;
 const ItemHeader = styled.div``;
 // [필요 기능]

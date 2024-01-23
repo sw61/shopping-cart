@@ -1,26 +1,39 @@
 import { useState } from "react";
+import styled from "styled-components";
+import useInput from "../hooks/useInput";
 
-const ShopInsert = (onInsert) => {
-  const [nameValue, setNameValue] = useState("");
-  const [priceValue, setPriceValue] = useState("");
+const ShopInsert = ({ onInsert }) => {
+  const priceValue = useInput("");
+  const nameValue = useInput("");
 
-  const onNameChange = (event) => {
-    setNameValue(event.target.value);
-  };
-  const onPriceChange = (event) => {
-    setPriceValue(event.target.value);
-  };
   const addItem = () => {
-    onInsert(value);
-    setValue("");
+    onInsert(nameValue.value, priceValue.value);
+    nameValue.reset();
+    priceValue.reset();
   };
 
   return (
     <>
-      <input onNameChange={onNameChange} nameValue={nameValue}></input>
-      <input onPriceChange={onPriceChange} priceValue={priceValue}></input>
-      <button onClick={addItem}>담기</button>
+      <InsertContainer>
+        <input
+          onChange={nameValue.onChange}
+          value={nameValue.value}
+          placeholder="상품명"
+        ></input>
+        <input
+          onChange={priceValue.onChange}
+          value={priceValue.value}
+          placeholder="상품 가격"
+        ></input>
+        <ButtonBox onClick={addItem}>물건 등록</ButtonBox>
+      </InsertContainer>
     </>
   );
 };
 export default ShopInsert;
+const InsertContainer = styled.div`
+  display: flex;
+`;
+const ButtonBox = styled.button`
+  cursor: pointer;
+`;
