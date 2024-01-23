@@ -1,13 +1,17 @@
 import styled from "styled-components";
 
-const ShopItem = ({ thing, getItem }) => {
+const ShopItem = ({ thing, setCarts }) => {
   const { id, text, price } = thing;
+  const handleAddItem = () => {
+    const getItem = { id, text, price };
+    setCarts([id, text, price]);
+  };
 
   return (
     <ShopItemContainer>
       <TextBox>{text}</TextBox>
       <PriceBox>{price}</PriceBox>
-      <GetBtn onClick={() => getItem(thing)}>물건 담기</GetBtn>
+      <GetBtn onClick={handleAddItem}>물건 담기</GetBtn>
     </ShopItemContainer>
   );
 };

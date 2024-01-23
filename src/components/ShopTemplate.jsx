@@ -26,16 +26,16 @@ const ShopTemplate = () => {
     nextId.current++;
   };
   const [carts, setCarts] = useState([]);
-  const getItem = (item) => {
-    setCarts({ ...carts, item });
-  };
-
   return (
     <>
       <ShopContainer>
         <ShopHeader>물 건 리 스 트</ShopHeader>
         <ShopInsert onInsert={onInsert}></ShopInsert>
-        <ShopList things={things} getItem={getItem}></ShopList>
+        <ShopList
+          key={things.id}
+          things={things}
+          setCarts={setCarts}
+        ></ShopList>
         <ItemHeader>쇼 핑 카 트</ItemHeader>
         <CartTemplate carts={carts}></CartTemplate>
       </ShopContainer>
