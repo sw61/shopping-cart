@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 import ShopInsert from "./ShopInsert";
@@ -6,26 +6,38 @@ import ShopList from "./ShopList";
 import CartTemplate from "./CartTemplate";
 
 const ShopTemplate = () => {
-  const nextId = useRef(3);
+  const nextId = useRef(4);
   const [things, setThings] = useState([
     {
       id: 1,
       text: "소주",
       price: "6000원",
+      count: 0,
     },
-    { id: 2, text: "맥주", price: "6000원" },
-    { id: 3, text: "양주", price: "10000원" },
+    { id: 2, text: "맥주", price: "6000원", count: 0 },
+    { id: 3, text: "양주", price: "10000원", count: 0 },
   ]);
   const onInsert = (text, price) => {
     const thing = {
       id: nextId.current,
       text,
       price,
+      count: 0,
     };
     setThings(things.concat(thing));
     nextId.current++;
   };
   const [carts, setCarts] = useState([]);
+  const addCount = () => {
+    setCarts();
+  };
+  const minusCount = () => {
+    setCarts((preCount) => preCount - 1);
+  };
+  useEffect(() => {
+    console.log(carts);
+  }, [carts]);
+
   return (
     <>
       <ShopContainer>
@@ -34,10 +46,15 @@ const ShopTemplate = () => {
         <ShopList
           key={things.id}
           things={things}
+          carts={carts}
           setCarts={setCarts}
         ></ShopList>
         <ItemHeader>쇼 핑 카 트</ItemHeader>
-        <CartTemplate carts={carts}></CartTemplate>
+        <CartTemplate
+          carts={carts}
+          addCount={addCount}
+          minusCount={minusCount}
+        ></CartTemplate>
       </ShopContainer>
     </>
   );

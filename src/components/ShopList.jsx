@@ -1,9 +1,14 @@
 import ShopItem from "./ShopItem";
-const ShopList = ({ things, setCarts }) => {
+const ShopList = ({ things, carts, setCarts }) => {
   return (
     <>
       {things.map((thing) => (
-        <ShopItem thing={thing} setCarts={setCarts} />
+        <ShopItem
+          key={thing.id}
+          thing={thing}
+          carts={carts}
+          setCarts={setCarts}
+        />
       ))}
     </>
   );
