@@ -1,5 +1,5 @@
 import ShopItem from "./ShopItem";
-const ShopList = ({ things, carts, setCarts }) => {
+const ShopList = ({ things, carts, setCarts, thingDelete }) => {
   return (
     <>
       {things.map((thing) => (
@@ -8,6 +8,7 @@ const ShopList = ({ things, carts, setCarts }) => {
           thing={thing}
           carts={carts}
           setCarts={setCarts}
+          thingDelete={thingDelete}
         />
       ))}
     </>

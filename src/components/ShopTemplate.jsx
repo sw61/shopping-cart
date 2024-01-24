@@ -11,51 +11,79 @@ const ShopTemplate = () => {
     {
       id: 1,
       text: "소주",
-      price: "6000원",
-      count: 0,
+      price: "6000",
+      count: 1,
     },
-    { id: 2, text: "맥주", price: "6000원", count: 0 },
-    { id: 3, text: "양주", price: "10000원", count: 0 },
+    { id: 2, text: "맥주", price: "6000", count: 1 },
+    { id: 3, text: "양주", price: "10000", count: 1 },
   ]);
   const onInsert = (text, price) => {
     const thing = {
       id: nextId.current,
       text,
       price,
-      count: 0,
+      count: 1,
     };
     setThings(things.concat(thing));
     nextId.current++;
   };
+  const thingDelete = (id) => {
+    const thingDelete = things.filter((thing) => thing.id !== id);
+    setThings(thingDelete);
+  };
   const [carts, setCarts] = useState([]);
-  const addCount = () => {
-    setCarts();
+  // 장바구니 아이템 개수 +
+  const addCount = (id) => {
+    setCarts((prevCarts) =>
+      prevCarts.map((cart) =>
+        cart.id === id ? { ...cart, count: cart.count + 1 } : cart
+      )
+    );
   };
-  const minusCount = () => {
-    setCarts((preCount) => preCount - 1);
+  // 장바구니 아이템 개수 -
+  const minusCount = (id) => {
+    setCarts((prevCarts) =>
+      prevCarts.map((cart) =>
+        cart.id === id && cart.count > 0 // 0 이하로 안 내려가게 예외 처리
+          ? { ...cart, count: cart.count - 1 }
+          : cart
+      )
+    );
   };
-  useEffect(() => {
-    console.log(carts);
-  }, [carts]);
+  const totalCount = carts.reduce((total, cart) => total + cart.count, 0);
+  const getTotalPrice = carts.reduce(
+    (totalPrice, cart) => totalPrice + cart.count * cart.price,
+    0
+  );
+  const cartDelete = (id) => {
+    const cartDelete = carts.filter((cart) => cart.id !== id);
+    setCarts(cartDelete);
+  };
 
   return (
     <>
       <ShopContainer>
-        <ShopHeader>물 건 리 스 트</ShopHeader>
+        <ShopHeader>물건 리스트</ShopHeader>
         <ShopInsert onInsert={onInsert}></ShopInsert>
         <ShopList
           key={things.id}
           things={things}
           carts={carts}
           setCarts={setCarts}
+          thingDelete={thingDelete}
         ></ShopList>
-        <ItemHeader>쇼 핑 카 트</ItemHeader>
+      </ShopContainer>
+      <CartContainer>
+        <ItemHeader>쇼핑 카트</ItemHeader>
         <CartTemplate
           carts={carts}
           addCount={addCount}
           minusCount={minusCount}
+          totalCount={totalCount}
+          getTotalPrice={getTotalPrice}
+          cartDelete={cartDelete}
         ></CartTemplate>
-      </ShopContainer>
+      </CartContainer>
     </>
   );
 };
@@ -66,8 +94,35 @@ const ShopContainer = styled.div`
   flex-direction: column;
   margin: 0 auto;
 `;
-const ShopHeader = styled.div``;
-const ItemHeader = styled.div``;
+const CartContainer = styled.div`
+  display: flex;
+  width: 400px;
+  flex-direction: column;
+  margin: 0 auto;
+`;
+const ShopHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  height: 40px;
+  font-size: 24px;
+  font-weight: bolder;
+  border-radius: 5px;
+`;
+
+const ItemHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  height: 40px;
+  font-size: 24px;
+  font-weight: bolder;
+  border-radius: 5px;
+`;
 // [필요 기능]
 // 1. 물건을 등록할 인풋창 만들기. 인풋에는 ‘상품명’, ‘상품가격’을 입력받음.
 // 2. 물건을 입력하면 화면에 리스트로 출력하기.

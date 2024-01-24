@@ -15,16 +15,16 @@ const ShopInsert = ({ onInsert }) => {
   return (
     <>
       <InsertContainer>
-        <input
+        <InputBox
           onChange={nameValue.onChange}
           value={nameValue.value}
           placeholder="상품명"
-        ></input>
-        <input
+        ></InputBox>
+        <InputBox
           onChange={priceValue.onChange}
           value={priceValue.value}
           placeholder="상품 가격"
-        ></input>
+        ></InputBox>
         <ButtonBox onClick={addItem}>물건 등록</ButtonBox>
       </InsertContainer>
     </>
@@ -34,6 +34,16 @@ export default ShopInsert;
 const InsertContainer = styled.div`
   display: flex;
 `;
+const InputBox = styled.input`
+  width: 161px;
+  height: 25px;
+  border-radius: 5px;
+`;
 const ButtonBox = styled.button`
   cursor: pointer;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
 `;
